@@ -186,9 +186,12 @@ export function HotspotExplorer() {
 }
 
 function HotspotDetail({ hotspot, complaints }: { hotspot: Hotspot; complaints: Complaint[] }) {
-  const members = complaints
-    .filter((c) => hotspot.complaintIds.includes(c.id))
-    .sort((a, b) => Date.parse(b.reportedAt) - Date.parse(a.reportedAt));
+  const members = useMemo(() => {
+    const ids = new Set(hotspot.complaintIds);
+    return complaints
+      .filter((c) => ids.has(c.id))
+      .sort((a, b) => Date.parse(b.reportedAt) - Date.parse(a.reportedAt));
+  }, [hotspot, complaints]);
   const stillOpen = members.filter((c) => !isClosed(c.status)).length;
 
   return (

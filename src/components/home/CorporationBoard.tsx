@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Counter } from "@/components/ui/Counter";
 import { CORPORATIONS, CORPORATION_NAME } from "@/lib/names";
 import { corporationStats } from "@/lib/stats";
@@ -27,11 +28,15 @@ export function CorporationBoard() {
   const complaints = useComplaints();
   const hotspots = useHotspots();
   const now = useNowIso();
+  const allStats = useMemo(
+    () => Object.fromEntries(CORPORATIONS.map((c) => [c, corporationStats(complaints, c, now)])),
+    [complaints, now],
+  );
 
   return (
     <ul className="space-y-4">
       {CORPORATIONS.map((corporation) => {
-        const stats = corporationStats(complaints, corporation, now);
+        const stats = allStats[corporation];
         const spots = hotspots.filter((h) => h.corporation === corporation).length;
         return (
           <li key={corporation} className="rounded-ui border border-line bg-panel p-4">

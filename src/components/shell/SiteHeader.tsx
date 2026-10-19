@@ -11,7 +11,7 @@ export function SiteHeader() {
   const { hydrated, role } = useSession();
 
   return (
-    <header className="bg-road text-on-road">
+    <header className="sticky top-0 z-[1100] bg-road text-on-road">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-1 px-4 py-2.5 sm:px-6">
         <Link href="/" aria-label="Shebagrid home">
           <Wordmark onRoad />

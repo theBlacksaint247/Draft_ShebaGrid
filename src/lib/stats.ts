@@ -1,8 +1,6 @@
-import { isClosed } from "./sla";
+import { isClosed, isFixedThisWeek } from "./sla";
+import { DAY_MS } from "./time";
 import type { Complaint, Corporation } from "./types";
-
-const DAY_MS = 24 * 3_600_000;
-const WEEK_MS = 7 * DAY_MS;
 
 export interface CorporationStats {
   open: number;
@@ -39,7 +37,7 @@ export function corporationStats(
 
   return {
     open: own.length - closed.length,
-    fixedThisWeek: closed.filter((c) => nowMs - Date.parse(c.updatedAt) <= WEEK_MS).length,
+    fixedThisWeek: closed.filter((c) => isFixedThisWeek(c, nowMs)).length,
     onTimePercent: closed.length === 0 ? null : Math.round((onTime.length / closed.length) * 100),
     perDay,
   };

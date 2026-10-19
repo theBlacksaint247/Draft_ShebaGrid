@@ -132,6 +132,20 @@
 
 html {
   background: var(--paper);
+  /* Keeps anchor targets clear of the sticky header (taller when the nav wraps). */
+  scroll-padding-top: 7rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (min-width: 40rem) {
+  html {
+    scroll-padding-top: 5rem;
+  }
 }
 
 body {

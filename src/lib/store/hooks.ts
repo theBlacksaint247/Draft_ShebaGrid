@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { SERVER_CLOCK, SERVER_DEMO, clock, demo, hotspotsFor } from "./demo";
 import { SERVER_SESSION, session } from "./session";
+import { MINUTE_MS } from "../time";
 import { theme } from "./theme";
 import { toasts } from "./toasts";
 
@@ -30,14 +31,13 @@ export function useFresh() {
   );
 }
 
-const MINUTE = 60_000;
 
 /** The time, rounded down to the minute, so a list does not re-sort more than once a minute. */
 export function useNowMinute() {
   return useSyncExternalStore(
     clock.subscribe,
-    () => Math.floor(clock.get() / MINUTE) * MINUTE,
-    () => Math.floor(SERVER_CLOCK / MINUTE) * MINUTE,
+    () => Math.floor(clock.get() / MINUTE_MS) * MINUTE_MS,
+    () => Math.floor(SERVER_CLOCK / MINUTE_MS) * MINUTE_MS,
   );
 }
 

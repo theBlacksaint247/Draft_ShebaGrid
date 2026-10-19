@@ -58,7 +58,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="how" className="scroll-mt-4 border-y border-line bg-panel">
+      <section id="how" className="border-y border-line bg-panel">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <h2 className="text-3xl font-bold">How it works</h2>

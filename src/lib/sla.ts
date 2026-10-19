@@ -1,3 +1,4 @@
+import { HOUR_MS, WEEK_MS } from "./time";
 import type { Complaint, Status, Urgency } from "./types";
 
 /** Hours a ward engineer has to resolve a complaint, by urgency. */
@@ -8,8 +9,6 @@ const SLA_HOURS: Record<Urgency, number> = {
   2: 120,
   1: 168,
 };
-
-const HOUR_MS = 3_600_000;
 
 export function slaHours(urgency: Urgency): number {
   return SLA_HOURS[urgency];
@@ -23,6 +22,11 @@ const CLOSED: Status[] = ["resolved", "verified"];
 
 export function isClosed(status: Status): boolean {
   return CLOSED.includes(status);
+}
+
+/** Closed within the last week, counted from its last update. */
+export function isFixedThisWeek(c: Complaint, nowMs: number): boolean {
+  return isClosed(c.status) && nowMs - Date.parse(c.updatedAt) <= WEEK_MS;
 }
 
 export interface TimeLeft {

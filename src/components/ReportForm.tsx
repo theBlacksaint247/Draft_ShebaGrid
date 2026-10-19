@@ -17,7 +17,7 @@ import { useComplaints, useNowIso } from "@/lib/store/hooks";
 import type { Category, Complaint, LatLng } from "@/lib/types";
 import { estimateUrgency } from "@/lib/urgency";
 
-const CATEGORIES: Category[] = ["pothole", "waterlogging", "open-manhole", "other"];
+const CATEGORIES = Object.keys(CATEGORY_LABEL) as Category[];
 
 const START_VIEW: LatLng = { lat: 23.79, lng: 90.4 };
 

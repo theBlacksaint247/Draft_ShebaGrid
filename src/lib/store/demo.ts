@@ -2,6 +2,7 @@ import { buildHotspots } from "../hotspots";
 import { PLACES } from "../places";
 import { actionFor, actorFor, advance, escalateOverdue } from "../queue";
 import { STATUS_LABEL } from "../sla";
+import { HOUR_MS } from "../time";
 import { createComplaint, type NewComplaint } from "../ticket";
 import type { Complaint, Hotspot, Role } from "../types";
 import { createStore } from "./create-store";
@@ -156,7 +157,7 @@ function runEscalations(nowMs: number, quiet = false) {
 
 /** Jump the clock forward, to show deadlines and escalation without waiting. */
 export function skipAhead(hours: number) {
-  skippedMs += hours * 3_600_000;
+  skippedMs += hours * HOUR_MS;
   clock.set(currentMs());
   runEscalations(currentMs());
   persist();

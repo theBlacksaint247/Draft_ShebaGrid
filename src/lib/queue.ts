@@ -1,5 +1,5 @@
 import { wardEngineer } from "./people";
-import { STATUS_ACTION, isClosed, isOverdue, nextStatus, timeLeft } from "./sla";
+import { STATUS_ACTION, isClosed, isFixedThisWeek, isOverdue, nextStatus, timeLeft } from "./sla";
 import type { Complaint, Role, Status } from "./types";
 
 /**
@@ -24,17 +24,13 @@ export function compareByPriority(now: string) {
   };
 }
 
-const WEEK_MS = 7 * 24 * 3_600_000;
-
 export function summarize(complaints: Complaint[], now: string) {
   const open = complaints.filter((c) => !isClosed(c.status));
   return {
     open: open.length,
     overdue: open.filter((c) => isOverdue(c, now)).length,
     escalated: complaints.filter((c) => c.status === "escalated").length,
-    fixedThisWeek: complaints.filter(
-      (c) => isClosed(c.status) && Date.parse(now) - Date.parse(c.updatedAt) <= WEEK_MS,
-    ).length,
+    fixedThisWeek: complaints.filter((c) => isFixedThisWeek(c, Date.parse(now))).length,
   };
 }
 

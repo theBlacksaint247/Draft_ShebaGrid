@@ -1,11 +1,10 @@
 import { offsetMeters } from "./geo";
 import { dueDate } from "./sla";
+import { HOUR_MS } from "./time";
 import type { Category, Complaint, LatLng, Status, Urgency } from "./types";
 
 /** A fixed moment for the tests, so they do not depend on the clock. */
 export const NOW = "2026-10-19T06:00:00.000Z";
-
-export const HOUR = 3_600_000;
 
 /** Mirpur-10 circle, used as a starting point. */
 export const MIRPUR: LatLng = { lat: 23.8069, lng: 90.3687 };
@@ -13,7 +12,7 @@ export const MIRPUR: LatLng = { lat: 23.8069, lng: 90.3687 };
 const ORDER: Status[] = ["open", "assigned", "in-progress", "resolved", "verified"];
 
 /** An hour after `iso`. */
-export const later = (iso: string, hours: number) => new Date(Date.parse(iso) + hours * HOUR).toISOString();
+export const later = (iso: string, hours: number) => new Date(Date.parse(iso) + hours * HOUR_MS).toISOString();
 
 interface Options {
   id?: string;
