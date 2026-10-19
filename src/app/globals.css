@@ -1,27 +1,359 @@
 @import "tailwindcss";
 
+/*
+ * Shebagrid look: kerb concrete, asphalt, flag green, and the orange and yellow
+ * of road-marking paint. The dark theme is the same road at night.
+ *
+ * Colours are plain CSS variables so that one switch changes the whole page:
+ * light is the default, dark follows the system setting until the person picks
+ * one with the toggle in the header (which sets data-theme on <html>).
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --paper: #eef1ef;
+  --panel: #ffffff;
+  --ink: #16221f;
+  --muted: #526360;
+  --line: #cfd8d3;
+  --wash: #e3e9e5;
+  --road: #1a2a2d;
+  --on-road: #f2f6f4;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans), var(--font-noto-bengali), system-ui,
-    sans-serif;
-  --font-mono: var(--font-geist-mono);
+  --brand: #0b6b4c;
+  --brand-ink: #0b6b4c;
+  --brand-deep: #084f38;
+  --brand-soft: #d7eee3;
+
+  --signal: #e8501a;
+  --signal-ink: #b23d0e;
+  --signal-soft: #fde3d6;
+
+  --survey: #f2c01a;
+  --survey-ink: #7a5b00;
+  --survey-soft: #faf0c4;
+
+  --map-ground: #dbe5df;
+  --map-grid: rgb(22 34 31 / 0.07);
+  --shadow: 0 1px 2px rgb(22 34 31 / 0.08), 0 6px 18px -8px rgb(22 34 31 / 0.18);
+
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --paper: #0f1618;
+    --panel: #172023;
+    --ink: #e8eeec;
+    --muted: #9aaeaa;
+    --line: #2b3a3d;
+    --wash: #1d282b;
+    --road: #0a1012;
+    --on-road: #eef3f1;
+
+    --brand: #12805c;
+    --brand-ink: #54d3a5;
+    --brand-deep: #0e6a4d;
+    --brand-soft: #153a2e;
+
+    --signal: #ff6b36;
+    --signal-ink: #ff9a70;
+    --signal-soft: #40201a;
+
+    --survey: #f5c72c;
+    --survey-ink: #f3cb55;
+    --survey-soft: #3a300d;
+
+    --map-ground: #1c282b;
+    --map-grid: rgb(232 238 236 / 0.06);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 22px -8px rgb(0 0 0 / 0.6);
+
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --paper: #0f1618;
+  --panel: #172023;
+  --ink: #e8eeec;
+  --muted: #9aaeaa;
+  --line: #2b3a3d;
+  --wash: #1d282b;
+  --road: #0a1012;
+  --on-road: #eef3f1;
+
+  --brand: #12805c;
+  --brand-ink: #54d3a5;
+  --brand-deep: #0e6a4d;
+  --brand-soft: #153a2e;
+
+  --signal: #ff6b36;
+  --signal-ink: #ff9a70;
+  --signal-soft: #40201a;
+
+  --survey: #f5c72c;
+  --survey-ink: #f3cb55;
+  --survey-soft: #3a300d;
+
+  --map-ground: #1c282b;
+  --map-grid: rgb(232 238 236 / 0.06);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 22px -8px rgb(0 0 0 / 0.6);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-wash: var(--wash);
+  --color-road: var(--road);
+  --color-on-road: var(--on-road);
+
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-soft: var(--signal-soft);
+
+  --color-survey: var(--survey);
+  --color-survey-ink: var(--survey-ink);
+  --color-survey-soft: var(--survey-soft);
+
+  --font-sans: "Barlow", "Hind Siliguri", system-ui, sans-serif;
+  --font-display: "Barlow Semi Condensed", "Hind Siliguri", system-ui, sans-serif;
+
+  --radius-ui: 5px;
+  --shadow-lift: var(--shadow);
+}
+
+html {
+  background: var(--paper);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--brand-ink);
+  outline-offset: 2px;
+}
+
+/* A lane marking: the dashed yellow centre line that runs under the header. */
+.lane-line {
+  height: 4px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--survey) 0 26px,
+    transparent 26px 46px
+  );
+}
+
+/* A ticket number, set like a number plate. */
+.plate {
+  display: inline-block;
+  padding: 0 0.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--panel);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading placeholder. */
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  border-radius: var(--radius-ui);
+  background: linear-gradient(
+    90deg,
+    var(--wash) 30%,
+    color-mix(in oklab, var(--wash) 60%, var(--panel)) 50%,
+    var(--wash) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* Moments of motion. Each one answers something that changed on the page. */
+@keyframes paint-on {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.paint-ring {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: paint-on 1.1s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes row-new {
+  from {
+    background-color: var(--survey-soft);
+    box-shadow: inset 4px 0 0 var(--survey);
+  }
+  to {
+    background-color: transparent;
+    box-shadow: inset 4px 0 0 transparent;
+  }
+}
+
+.row-new {
+  animation: row-new 6s ease-out both;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.toast-in {
+  animation: toast-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes scan {
+  from {
+    transform: translateY(-10%);
+  }
+  to {
+    transform: translateY(110%);
+  }
+}
+
+.scan-line {
+  animation: scan 1.1s ease-in-out infinite alternate;
+}
+
+/* Schools, hospitals and main roads on the maps. */
+.map-place span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(45deg) scale(0.78);
+  background: var(--brand-ink);
+  border: 2px solid var(--panel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paint-ring,
+  .row-new,
+  .toast-in,
+  .scan-line,
+  .skeleton {
+    animation: none;
+  }
+}
+
+/* The theme toggle shows the icon for the theme you would switch to. */
+.icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .icon-sun {
+  display: block;
+}
+
+:root[data-theme="dark"] .icon-moon {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-sun {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .icon-moon {
+    display: none;
+  }
+}
+
+/* Leaflet picks up the page font and colours, and sits on a map-coloured ground. */
+div.leaflet-container {
+  font-family: var(--font-sans);
+  background-color: var(--map-ground);
+  /* A faint survey grid shows while map tiles load, or if the network is slow. */
+  background-image:
+    linear-gradient(var(--map-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--map-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+div.leaflet-tooltip {
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--panel);
+  border-color: var(--line);
+  border-radius: 4px;
+}
+
+div.leaflet-tooltip-top::before {
+  border-top-color: var(--line);
+}
+
+/* Map tiles come as light pictures, so the dark theme inverts and softens them. */
+:root[data-theme="dark"] .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.7);
+  }
+}
+
+:root[data-theme="dark"] .leaflet-control-attribution,
+:root[data-theme="dark"] .leaflet-bar a {
+  background: color-mix(in oklab, var(--panel) 85%, transparent);
+  color: var(--muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .leaflet-control-attribution,
+  :root:not([data-theme="light"]) .leaflet-bar a {
+    background: color-mix(in oklab, var(--panel) 85%, transparent);
+    color: var(--muted);
+  }
+}
+
+.leaflet-control-attribution a {
+  color: inherit;
 }

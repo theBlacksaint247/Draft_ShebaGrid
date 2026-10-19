@@ -1,22 +1,20 @@
 ---
 name: Bug report
-about: Something is not working as expected
+about: Something is not working
 title: ""
 labels: bug
 assignees: ""
 ---
 
-## What happened?
+## What happened
 
-## What should have happened?
+## Expected behaviour
 
 ## Steps to reproduce
 
 1. 
 2. 
 
-## Screenshots or error messages
+## Screenshots or errors
 
 ## Environment
-
-<!-- Browser, device, local or deployed. -->
