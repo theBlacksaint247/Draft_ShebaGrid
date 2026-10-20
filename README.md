@@ -20,12 +20,10 @@ Citizens report a problem with a photo, a location and a short description in Ba
 
 ## Unique features
 
-| # | Feature | Summary |
-|---|---------|---------|
-| 1 | Spatial Hotspot Detection & Location Risk Index | PostGIS DBSCAN clustering on a Leaflet map, with a risk score for each hotspot |
-| 2 | SLA Escalation Engine | Deterministic workflow that escalates overdue tickets to senior engineers |
-| 3 | Street Hazard Image Classifier (AI) | Classifies hazard type from the citizen's photo and flags likely duplicates |
-| 4 | Bangla Complaint Urgency Ranker (AI) | Scores urgency from Bangla or English complaint text |
+1. **Spatial Hotspot Detection & Location Risk Index:** groups nearby reports into hotspots on a map and gives each one a risk score.
+2. **SLA Escalation Engine:** sends overdue tickets to a senior engineer automatically.
+3. **Street Hazard Image Classifier (AI):** tells the hazard type from the citizen's photo and flags likely duplicates.
+4. **Bangla Complaint Urgency Ranker (AI):** scores how urgent a complaint is from Bangla or English text.
 
 Supports **SDG 11** (Sustainable Cities and Communities) and **SDG 16** (Peace, Justice and Strong Institutions).
 
